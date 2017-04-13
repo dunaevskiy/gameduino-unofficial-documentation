@@ -18,6 +18,33 @@ Pro uložení barvy se používá little endian. Příklad uložení zelené bar
 | Hexadecimální little endian  | 0xE00B                 |
 
 
+## Kodér obrázků a (de)komprese
+Téměř určitě vznikne potřeba použít vlastní grafiku pro zobrazení na monitoru. Převod do hexadecimální podoby zajistí [Gameduino Background Encoder](http://gameduino.com/tools/).
+
+### Background
+Při standardním spuštění je vytvořen soubor `image.h`, jenž zabírá víc místa, ale popisuje všechny hodnoty v přesně zadaném pořadí. Takový soubor se do paměti gameduina ukládá jako:
+
+```c
+// Nahrát pořadová čísla znaků do paměti, počátek v RAM_PIC (0x0000)
+for (byte y = 0; y < 1; y++)
+   GD.copy(RAM_PIC + y * 64, image_pic + y * 1, 1);
+// Nahrát znaky do paměti, počátek v RAM_CHR (0x1000)
+GD.copy(RAM_CHR, image_chr, sizeof(image_chr));
+// Nahrát barvy znaků do paměti, počátek v RAM_PAL (0x2000)
+GD.copy(RAM_PAL, image_pal, sizeof(image_pal));
+```
+
+Pokud je potřeba šetřit pamětí arduina, tak existuje možnost komprese obrázku (`compress`). Pak se do paměti gameduina musí nahrávat s dekompresí:
+
+```c
+for (byte y = 0; y < 1; y++)
+   GD.copy(RAM_PIC + y * 64, image_pic + y * 1, 1);
+GD.uncompress(RAM_CHR, image_chr);
+GD.uncompress(RAM_PAL, image_pal);
+```
+
+Pokud je počátek každé z pamětí již vyplněn daty, tak je potřeba posunout ukazatelé na vhodné místo.
+
 ## Licence
 Toto dílo podléhá licenci [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
