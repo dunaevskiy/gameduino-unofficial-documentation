@@ -1,6 +1,4 @@
 # Gameduino Unofficial Documentation
- 
-
 [![license](https://img.shields.io/badge/license-(cc)_by--nc--sa-blue.svg?style=flat-square)]() [![license](https://img.shields.io/badge/platform-arduino-green.svg?style=flat-square)]() [![license](https://img.shields.io/badge/shield-gameduino-green.svg?style=flat-square)]()
 
 <img align="right" width="300px" src="images/gameduino.jpg"> 
@@ -27,12 +25,14 @@ Celý výstup tvoří tři nezávislé vrstvy. Platí pravidlo, že pokud barva 
 
 ### Background color
 Nejspodnější vrstva. Tvoří ji jediná barva (16 bitů), jenž se zadává přímo do registru.
+
 ```c
 GD.wr16(BG_COLOR, RGB(255,0,0));
 ```
 
 ### Background
 Tato vrstva má rozměr `512 * 512px`, ale ve skutečnosti můžeme zobrazit pouze `400 * 300px`. Pokud není posunutá, pak pixely `x:401-512` a `y:301-512` se nachází mimo obrazovku. Posun vrstvy se zadává v pixelech v registru, každý s pomocí 16 bitů.
+
 ```c
 GD.wr16(SCROLL_X, 0);
 GD.wr16(SCROLL_Y, 0);
@@ -45,7 +45,8 @@ Celá vrstva `background` je vykreslována s pomocí 4096 znaků (64 řádků, 6
 Vrstvu můžeme v paměti rozdělit do tří skupin: `RAM_PIC`, `RAM_CHR`, `RAM_PAL`. `RAM_PIC` přímo udává, co ce bude vykreslovat, `RAM_CHR` a `RAM_PAL` slouží jako úložiště.
 
 #### RAM_PIC
-<img align="right" width="280px" src="images/screen.png"> 
+<img align="right" width="280px" src="images/screen.png">
+
 - Přidělená paměť: 4096 bytes
 - Rozsah paměti: 0x0000 - 0x0FFF
 - Jedna hodnota zabírá: 1 byte
@@ -58,7 +59,8 @@ Do této vrstvy se umístí 4096 (64 * 64) pořadových čísel znaků (0-255, n
 - s pomocí znaků s pořadovým číslem 255, jenž mají fialovou barvu, je vykresleno písmeno ***G***
 - rozměry ***G*** jsou `32 * 40px`
 
-V paměti by daná vrstva vypadala takto: 
+V paměti by daná vrstva vypadala takto:
+
 ```c
 static flash_uint8_t pictureOfChars[] = {
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ... 0x00,
