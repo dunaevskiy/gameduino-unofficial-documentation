@@ -5,15 +5,25 @@
 
 <img align="right" width="300px" src="images/gameduino.jpg"> 
 
+- [Vykreslování na obrazovku](#vykreslování-na-obrazovku)
+	- [Background color](#background-color)
+	- [Background](#background)
+		- [RAM_PIC](#ram_pic)
+		- [RAM_CHR](#ram_chr)
+		- [RAM_PAL](#ram_pal)
+- [Barva](#barva)
+- [Kodér obrázků a (de)komprese](#kodér-obrázků-a-dekomprese)
+	- [Background Encoder](#background-encoder)
+- [Licence](#licence)
 
 ## Vykreslování na obrazovku
 Gameduino poskytuje rozlišení `400 * 300px` přes VGA konektor.
 
 Celý výstup tvoří tři nezávislé vrstvy. Platí pravidlo, že pokud barva pixelu v určité vrstvě je nastavena na průhlednou, tak je vidět vrstva, jenž se nachází pod ní.
 
-* `background_color` - nejspodnější, tvořena jednou barvou
-* `background` - pozadí
-* `foreground` - vrstva `sprites`
+- `background_color` - nejspodnější, tvořena jednou barvou
+- `background` - pozadí
+- `foreground` - vrstva `sprites`
 
 ### Background color
 Nejspodnější vrstva. Tvoří ji jediná barva (16 bitů), jenž se zadává přímo do registru.
