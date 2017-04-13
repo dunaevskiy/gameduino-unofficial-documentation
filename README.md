@@ -1,14 +1,131 @@
 # Gameduino Unofficial Documentation
+ 
+
 [![license](https://img.shields.io/badge/license-(cc)_by--nc--sa-blue.svg?style=flat-square)]() [![license](https://img.shields.io/badge/platform-arduino-green.svg?style=flat-square)]() [![license](https://img.shields.io/badge/shield-gameduino-green.svg?style=flat-square)]()
 
+<img align="right" width="300px" src="images/gameduino.jpg"> 
+
+
+## Vykreslování na obrazovku
+Gameduino poskytuje rozlišení `400 * 300px` přes VGA konektor.
+
+Celý výstup tvoří tři nezávislé vrstvy. Platí pravidlo, že pokud barva pixelu v určité vrstvě je nastavena na průhlednou, tak je vidět vrstva, jenž se nachází pod ní.
+
+* `background_color` - nejspodnější, tvořena jednou barvou
+* `background` - pozadí
+* `foreground` - vrstva `sprites`
+
+### Background color
+Nejspodnější vrstva. Tvoří ji jediná barva (16 bitů), jenž se zadává přímo do registru.
+```c
+GD.wr16(BG_COLOR, RGB(255,0,0));
+```
+
+### Background
+Tato vrstva má rozměr `512 * 512px`, ale ve skutečnosti můžeme zobrazit pouze `400 * 300px`. Pokud není posunutá, pak pixely `x:401-512` a `y:301-512` se nachází mimo obrazovku. Posun vrstvy se zadává v pixelech v registru, každý s pomocí 16 bitů.
+```c
+GD.wr16(SCROLL_X, 0);
+GD.wr16(SCROLL_Y, 0);
+```
+
+> character (znak) - základní jednotka pro vykreslování obrazovky, tvořena maticí pixelů 8x8
+
+Celá vrstva `background` je vykreslována s pomocí 4096 znaků (64 řádků, 64 sloupců). Celkově může být definováno 256 různých znaků. V rámci jednoho znaku lze použít nejvýše 4 unikátní barvy.
+
+Vrstvu můžeme v paměti rozdělit do tří skupin: `RAM_PIC`, `RAM_CHR`, `RAM_PAL`. `RAM_PIC` přímo udává, co ce bude vykreslovat, `RAM_CHR` a `RAM_PAL` slouží jako úložiště.
+
+#### RAM_PIC
+<img align="right" width="280px" src="images/screen.png"> 
+- Přidělená paměť: 4096 bytes
+- Rozsah paměti: 0x0000 - 0x0FFF
+- Jedna hodnota zabírá: 1 byte
+- Kapacita uložených hodnot: 4096
+
+Do této vrstvy se umístí 4096 (64 * 64) pořadových čísel znaků (0-255, neboli 0x00-0xff), jenž se mohou libovolně opakovat. Hodnoty všech znaků jsou uloženy v `RAM_CHR`. Pokud uvedeme rozměry obrazovky ve znacích, tak bude zobrazeno 50 znaků na šířku a 37.5 znaků na výšku. 
+
+***Příklad (viz tabulka)***
+- základ `background` vrstvy tvoří znaky s pořadovým číslem nula, jenž jsou celé vyplněné bílou barvou
+- s pomocí znaků s pořadovým číslem 255, jenž mají fialovou barvu, je vykresleno písmeno ***G***
+- rozměry ***G*** jsou `32 * 40px`
+
+V paměti by daná vrstva vypadala takto: 
+```c
+static flash_uint8_t pictureOfChars[] = {
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ... 0x00,
+   0x00, 0xff, 0xff, 0xff, 0xff, 0x00, ... 0x00,
+   0x00, 0xff, 0x00, 0x00, 0x00, 0x00, ... 0x00,
+   0x00, 0xff, 0x00, 0xff, 0xff, 0x00, ... 0x00,
+   0x00, 0xff, 0x00, 0x00, 0xff, 0x00, ... 0x00,
+   0x00, 0xff, 0xff, 0xff, 0xff, 0x00, ... 0x00,
+   ...
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ... 0x00
+}
+```
+
+#### RAM_CHR
+<img align="right" width="280px" src="images/character.png"> 
+
+- Přidělená paměť: 4096 bytes
+- Rozsah paměti: 0x1000 - 0x1FFF
+- Jedna hodnota: 16 bytes (64 \* 2 bits)
+- Kapacita uložených hodnot: 256
+
+V této části paměti je definováno, jak mají vypadat jednotlivé znaky. Každý znak lze popsat s pomocí 16 bytů, tzn. maximální počet znaků je 256.
+
+Znak je matice pixelů o rozměrech `8 * 8`, každý pixel je popsán s pomocí 2 bitů (2^2 kombinací = 4 různé barvy), jenž uchovávají pořadové číslo barvy daného znaku. 4 barvy pro každý znak jsou uloženy v `RAM_PAL`.
+
+***Příklad (viz tabulka)***
+Tento znak tvoří čtyři barvy (00 = fialová, 01 = zelená, 10 = modrá, 11 = žlutá), další barvu nelze přidat (neexistují jiné kombinace dvou bitů). Využijeme tento znak a definujeme ho jako první a druhý znak v paměti:
+
+```c
+static flash_uint8_t chars[] = {
+   // 0. znak (nedefinovaný - hodnoty 0x00)
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   // 1. znak
+   0x00, 0x55, 0x00, 0x55, 0x00, 0x55, 0x00, 0x55, 0xaa, 0xff, 0xaa, 0xff, 0xaa, 0xff, 0xaa, 0xff,
+   // 2. znak
+   0x00, 0x55, 0x00, 0x55, 0x00, 0x55, 0x00, 0x55, 0xaa, 0xff, 0xaa, 0xff, 0xaa, 0xff, 0xaa, 0xff,
+   ...
+}
+```
+
+#### RAM_PAL
+- Přidělená paměť: 2048 bytes
+- Rozsah paměti: 0x2000 - 0x27FF
+- Jedna hodnota: 8 bytes (4 \* 2 bytes)
+- Kapacita uložených hodnot: 256
+
+Zde se ukládají barvy pro každý ze 256 znaků. Jelikož každý znak může mít pouze 4 barvy, pro ukládání stačí 8 bytů. Každá barva je uložena v little endian (viz [barva](#barva)).
+
+Využijeme znaku, jenž byl popsán v [RAM_CHR](#ram_chr), barvy definujeme jako:
+
+| Barva   | Big Endian | Little Endian |
+|:--------|:-----------|:--------------|
+| fialová | 0x4d17     | 0x174d        |
+| zelená  | 0x4f8b     | 0x8b4f        |
+| modrá   | 0x32db     | 0xdb32        |
+| žlutá   | 0x467b     | 0x467b        |
+
+```c
+static flash_uint8_t colors[] = {
+   // Barvy 0. znaku (nedefinované - hodnoty 0x00 )
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   // Barvy 1. znaku
+   0x8b, 0x4f, 0xdb, 0x32, 0x46, 0x7b, 0x17, 0x4d,
+   // Barvy 2. znaku
+   0x8b, 0x4f, 0xdb, 0x32, 0x46, 0x7b, 0x17, 0x4d,
+   ...
+}
+```
+
 ## Barva
-Každá definovaná barva zabírá 16b (2B) paměti. Nejvyšší bit (typ A) určuje, zda tato barva je průhledná. Pokud ano, tak zbytek hodnot je ignorován, tzn. nelze vytvořit poloprůhlednou barvu.
+Každá definovaná barva zabírá 16 bitů paměti. Nejvyšší bit (typ A) určuje, zda tato barva je průhledná. Pokud ano, tak zbytek hodnot je ignorován, tzn. nelze vytvořit poloprůhlednou barvu.
 
 ![](images/hex_color.png)
 
-Bity 0-14 jsou určeny pro ukládání odstínu. Většinou jsme zvyklí určovat každou z RGB barev hodnotou 8b a mít `256 * 256 * 256 = 16 777 216` barevných odstínů. Zde je každá ze základních barev určena 5b. Při transformaci z normálního obrázkového formátu dochází k přemapování hodnoty z 0-255 na 0-31, což snižuje celkový počet barevných odstínů na `32 768`.
+Bity 0-14 jsou určeny pro ukládání odstínu. Většinou jsme zvyklí definovat každou z RGB barev hodnotou 8 bitů a mít `256 * 256 * 256 = 16 777 216` barevných odstínů. Zde je každá ze základních barev určena 5 bity. Při transformaci z normálního obrázkového formátu dochází k přemapování hodnoty z 0-255 na 0-31, což snižuje celkový počet barevných odstínů na `32 768`.
 
-Pro uložení barvy se používá little endian. Příklad uložení zelené barvy:
+Pro ukládání barvy se používá little endian. Příklad uložení zelené barvy:
 
 | Formát                       | Hodnota                |
 |:-----------------------------|:-----------------------|
@@ -19,9 +136,9 @@ Pro uložení barvy se používá little endian. Příklad uložení zelené bar
 
 
 ## Kodér obrázků a (de)komprese
-Téměř určitě vznikne potřeba použít vlastní grafiku pro zobrazení na monitoru. Převod do hexadecimální podoby zajistí [Gameduino Background Encoder](http://gameduino.com/tools/).
+Téměř určitě vznikne potřeba použít vlastní grafiku pro zobrazení na monitoru. Převod do hexadecimální podoby zajistí [Gameduino Encoder](http://gameduino.com/tools/).
 
-### Background
+### Background Encoder
 Při standardním spuštění je vytvořen soubor `image.h`, jenž zabírá víc místa, ale popisuje všechny hodnoty v přesně zadaném pořadí. Takový soubor se do paměti gameduina ukládá jako:
 
 ```c
