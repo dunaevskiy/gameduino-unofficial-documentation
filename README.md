@@ -14,7 +14,7 @@
 	- [Background Encoder](#background-encoder)
 - [Licence](#licence)
 
-## Vykreslování na obrazovku
+# Vykreslování na obrazovku
 Gameduino poskytuje rozlišení `400 * 300px` přes VGA konektor.
 
 Celý výstup tvoří tři nezávislé vrstvy. Platí pravidlo, že pokud barva pixelu v určité vrstvě je nastavena na průhlednou, tak je vidět vrstva, jenž se nachází pod ní.
@@ -23,14 +23,14 @@ Celý výstup tvoří tři nezávislé vrstvy. Platí pravidlo, že pokud barva 
 - `background` - pozadí
 - `foreground` - vrstva `sprites`
 
-### Background color
+## Background color
 Nejspodnější vrstva. Tvoří ji jediná barva (16 bitů), jenž se zadává přímo do registru.
 
 ```c
 GD.wr16(BG_COLOR, RGB(255,0,0));
 ```
 
-### Background
+## Background
 Tato vrstva má rozměr `512 * 512px`, ale ve skutečnosti můžeme zobrazit pouze `400 * 300px`. Pokud není posunutá, pak pixely `x:401-512` a `y:301-512` se nachází mimo obrazovku. Posun vrstvy se zadává v pixelech v registru, každý s pomocí 16 bitů.
 
 ```c
@@ -44,7 +44,7 @@ Celá vrstva `background` je vykreslována s pomocí 4096 znaků (64 řádků, 6
 
 Vrstvu můžeme v paměti rozdělit do tří skupin: `RAM_PIC`, `RAM_CHR`, `RAM_PAL`. `RAM_PIC` přímo udává, co ce bude vykreslovat, `RAM_CHR` a `RAM_PAL` slouží jako úložiště.
 
-#### RAM_PIC
+### RAM_PIC
 <img align="right" width="280px" src="images/screen.png">
 
 - Přidělená paměť: 4096 bytes
@@ -74,7 +74,7 @@ static flash_uint8_t pictureOfChars[] = {
 }
 ```
 
-#### RAM_CHR
+### RAM_CHR
 <img align="right" width="280px" src="images/character.png"> 
 
 - Přidělená paměť: 4096 bytes
@@ -102,7 +102,7 @@ static flash_uint8_t chars[] = {
 }
 ```
 
-#### RAM_PAL
+### RAM_PAL
 - Přidělená paměť: 2048 bytes
 - Rozsah paměti: 0x2000 - 0x27FF
 - Jedna hodnota: 8 bytes (4 \* 2 bytes)
@@ -131,7 +131,7 @@ static flash_uint8_t colors[] = {
 }
 ```
 
-## Barva
+# Barva
 Každá definovaná barva zabírá 16 bitů paměti. Nejvyšší bit (typ A) určuje, zda tato barva je průhledná. Pokud ano, tak zbytek hodnot je ignorován, tzn. nelze vytvořit poloprůhlednou barvu.
 
 ![](images/hex_color.png)
@@ -148,10 +148,10 @@ Pro ukládání barvy se používá little endian. Příklad uložení zelené b
 | Hexadecimální little endian  | 0xE00B                 |
 
 
-## Kodér obrázků a (de)komprese
+# Kodér obrázků a (de)komprese
 Téměř určitě vznikne potřeba použít vlastní grafiku pro zobrazení na monitoru. Převod do hexadecimální podoby zajistí [Gameduino Encoder](http://gameduino.com/tools/).
 
-### Background Encoder
+## Background Encoder
 Při standardním spuštění je vytvořen soubor `image.h`, jenž zabírá víc místa, ale popisuje všechny hodnoty v přesně zadaném pořadí. Takový soubor se do paměti gameduina ukládá jako:
 
 ```c
@@ -175,7 +175,7 @@ GD.uncompress(RAM_PAL, image_pal);
 
 Pokud je počátek každé z pamětí již vyplněn daty, tak je potřeba posunout ukazatelé na vhodné místo.
 
-## Licence
+# Licence
 Toto dílo podléhá licenci [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 [![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
