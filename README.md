@@ -87,6 +87,7 @@ V této části paměti je definováno, jak mají vypadat jednotlivé znaky. Ka�
 Znak je matice pixelů o rozměrech `8 * 8`, každý pixel je popsán s pomocí 2 bitů (2^2 kombinací = 4 různé barvy), jenž uchovávají pořadové číslo barvy daného znaku. 4 barvy pro každý znak jsou uloženy v `RAM_PAL`.
 
 ***Příklad (viz tabulka)***
+
 Tento znak tvoří čtyři barvy (00 = fialová, 01 = zelená, 10 = modrá, 11 = žlutá), další barvu nelze přidat (neexistují jiné kombinace dvou bitů). Využijeme tento znak a definujeme ho jako první a druhý znak v paměti:
 
 ```c
