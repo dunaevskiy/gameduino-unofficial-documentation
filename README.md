@@ -5,16 +5,18 @@
 
 [Gameduino](http://excamera.com/sphinx/gameduino/) je shield, jenž poskytuje možnost připojit Arduino k VGA monitoru a audio výstupu a pracovat s grafickými prvky mnohem efektivněji. Základem grafického zobrazení jsou tři nezávislé [tile-based](https://en.wikipedia.org/wiki/Tile-based_video_game) vrstvy.
 
-- [Vykreslování na obrazovku](#vykreslování-na-obrazovku)
-	- [Background color](#background-color)
-	- [Background](#background)
-		- [RAM_PIC](#ram_pic)
-		- [RAM_CHR](#ram_chr)
-		- [RAM_PAL](#ram_pal)
-- [Barva](#barva)
-- [Kodér obrázků a (de)komprese](#kodér-obrázků-a-dekomprese)
-	- [Background Encoder](#background-encoder)
-- [Licence](#licence)
+* [Vykreslování na obrazovku](#vykreslování-na-obrazovku)
+	* [Background color](#background-color)
+	* [Background](#background)
+		* [RAM_PIC](#ram_pic)
+		* [RAM_CHR](#ram_chr)
+		* [RAM_PAL](#ram_pal)
+* [Barva](#barva)
+* [Kodér obrázků a (de)komprese](#kodér-obrázků-a-dekomprese)
+	* [Background Encoder](#background-encoder)
+* [Příklady](#příklady)
+	* [Font 8x16px (background)](#font-8x16px-background)
+* [Licence](#licence)
 
 # Vykreslování na obrazovku
 Gameduino poskytuje rozlišení `400 * 300px` přes VGA konektor.
