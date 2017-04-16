@@ -5,6 +5,7 @@
 
 [Gameduino](http://excamera.com/sphinx/gameduino/) je shield, jenž poskytuje možnost připojit Arduino k VGA monitoru a audio výstupu a pracovat s grafickými prvky mnohem efektivněji. Základem grafického zobrazení jsou tři nezávislé [tile-based](https://en.wikipedia.org/wiki/Tile-based_video_game) vrstvy.
 
+* [Některé základní metody knihovny Gameduino](#některé-základní-metody-knihovny-gameduino)
 * [Vykreslování na obrazovku](#vykreslování-na-obrazovku)
 	* [Background color](#background-color)
 	* [Background](#background)
@@ -17,6 +18,29 @@
 * [Příklady](#příklady)
 	* [Font 8x16px (background)](#font-8x16px-background)
 * [Licence](#licence)
+
+# Některé základní metody knihovny Gameduino
+- *bool* GD::**begin()**
+	- inicializace gameduina, reset paměti
+
+- *byte* GD::**rd(** unsigned int *addr* **)**
+	- přečte 8bit z paměti (přes ukazatel)
+- *unsigned int* GD::**rd16(** unsigned int *addr* **)** 
+	- přečte 16bit z paměti (přes ukazatel)
+- *void* GD::**wr(** unsigned int *addr*, byte *v* **)**
+	- zapíše 8bit s hodnotou `v` do paměti (přes ukazatel)
+- *void* GD::**wr16(** unsigned int *addr*, unsigned int *v* **)** 
+	- zapíše 16bit s hodnotou `v` do paměti (přes ukazatel)
+
+- *void* GD::**fill(** int *addr*, byte *v*, unsigned int *count* **)**
+	- vyplní pamět hodnotami `v` od ukazatele, `count` určuje počet zapisovaných hodnot
+
+- *void* GD::**copy(** unsigned int *addr*, prog_uchar* *src*, int *count* **)**
+	- kopírování dat z AVR flash paměti do paměti gameduina (např pro grafické prvky)
+- *void* GD::**uncompress(** unsigned int *addr*, prog_uchar* *src* **)**
+	- kopírování dat z AVR flash paměti do paměti gameduina s využitím dekomprese (např pro grafické prvky)
+
+Jiné metody: [http://excamera.com/sphinx/gameduino/GD/index.html](http://excamera.com/sphinx/gameduino/GD/index.html)
 
 # Vykreslování na obrazovku
 Gameduino poskytuje rozlišení `400 * 300px` přes VGA konektor.
