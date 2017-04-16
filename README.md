@@ -177,6 +177,53 @@ GD.uncompress(RAM_PAL, image_pal);
 
 Pokud je počátek každé z pamětí již vyplněn daty, tak je potřeba posunout ukazatelé na vhodné místo.
 
+# Příklady
+## Font 8x16px (background)
+- [Demo](http://excamera.com/sphinx/gameduino/demos/cp437/)
+
+Obrázek prvních 128 znaků cp437 pro [background](#background) vrstvu, bílá písmena na černém pozadí. 
+
+
+```c
+#include <SPI.h>     // SPI interface
+#include <GD.h>      // Gameduino
+#include "cp437.h"   // Hexadec hodnoty 128 symbolů, jejich palety
+
+static int atxy(int x, int y) {
+   // Zjistit pořadové číslo pointeru z background vrstvy (z 4096 znaků)
+   // y zjištuje řádek, jelikož font je 16px na výšku, tak musí přeskočit 1 řádek znaků 8*8px
+   //    "Hello":
+   //       (0 << 7) + 0 = 0
+   //    "This is the cp437"
+   //       (1 << 7) + 2 = (64 + 64) + 2 = 130
+   //       Přeskočíme 1. a 2. řádek 64 znaků (může být zabraný jiným textem), jsme na 3. řádku znaků, 3. znak zleva
+   //
+   // x určuje x-sovou souradnici v každém řádku
+   return (y << 7) + x;
+}
+
+static void drawstr(uint16_t addr, const char *s) {
+   while (*s) {                                       // Pro každý symbol
+      uint16_t w = pgm_read_word(cp437_pic + 2 * *s); // Je určen 16 bity (horní a dolní část 8*8px každého symbolu)
+      GD.wr(addr, lowByte(w));                        // Horní část 8*8px na určený uživatelem řádek znaků
+      GD.wr(addr + 64, highByte(w));                  // Dolní část 8*8px na další řádek znaků
+      s++, addr++;                                    // Vzít další symbol a další pozoci horního znaku
+   }
+}
+
+void setup() {
+   GD.begin();                                   // Inicializace gameduina
+   GD.uncompress(RAM_CHR, cp437_chr);            // Dekomprese znaků a uložení od prvního pointeru v RAM_CHR
+   GD.uncompress(RAM_PAL, cp437_pal);            // Dekomprese palety a uložení od prvního pointeru v RAM_PAL
+   drawstr(atxy(0, 0), "Hello");                 // Od pozice symbolu 8*16px [0:0] vypiš text 
+   drawstr(atxy(10, 2), "This is the cp437");    // Od pozice symbolu 8*16px [10:2] vypiš text
+   for (byte i = 0; i < 14; i++)
+      drawstr(atxy(i, 4 + i), " *Gameduino* ");  // Od pozice symbolů 8*16px [0,4], [1,5] ... vypiš text
+}
+
+void loop(){}
+```
+
 # Licence
 Toto dílo podléhá licenci [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
