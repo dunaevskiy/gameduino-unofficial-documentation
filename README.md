@@ -236,7 +236,7 @@ Pro vytvoření spritu ze 4 barev uplatníme stejný postup, jako pro 16-barevn�
 Uživatel může definovat 8 unikátních palet pro vykreslování spritů.
 
 | Ukazatel | Paměť | Jedna hodnota | Kapacita hodnot |
-|:--|:--|:--|:--|:--|:--|
+|:--|:--|:--|:--|
 | **RAM_SPRPAL** | 4 * 512 bytes | 2 bytes | 4 * 256 |  
 | **PALETTE16A** | 32 bytes | 2 bytes | 16 |  
 | **PALETTE16B** | 32 bytes | 2 bytes | 16 |  
