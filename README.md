@@ -281,8 +281,8 @@ for (i = 0; i < 4; i++) {
 | BIT | 3 | 2 | 1 | 0 |
 |:--|:--:|:--:|:--:|:--:|
 | **256 barev** | 0 | 0 | P | P | 
-| **256 barev** | 0 | 1 | N | A/B |
-| **256 barev** | 0 | N | N | A/B |
+| **16 barev** | 0 | 1 | N | A/B |
+| **4 barvy** | 0 | N | N | A/B |
 
 
 <img align="right" height="300px" src="images/rotation_types.png">
