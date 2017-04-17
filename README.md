@@ -77,7 +77,7 @@ GD.wr16(SCROLL_Y, 0);
 
 Celá vrstva `background` je vykreslována s pomocí 4096 znaků (64 řádků, 64 sloupců). Celkově může být definováno 256 různých znaků (v [`RAM_CHR`](#ram_chr)). V rámci jednoho znaku lze použít nejvýše 4 unikátní barvy.
 
-Vrstvu můžeme v paměti rozdělit do tří skupin: `RAM_PIC`, `RAM_CHR`, `RAM_PAL`. `RAM_PIC` přímo udává, co ce bude vykreslovat, `RAM_CHR` a `RAM_PAL` slouží jako úložiště.
+Vrstvu můžeme v paměti rozdělit do tří skupin: `RAM_PIC`, `RAM_CHR`, `RAM_PAL`. `RAM_PIC` přímo udává, co se bude vykreslovat, `RAM_CHR` a `RAM_PAL` slouží jako úložiště.
 
 
 <img align="right" width="280px" src="images/screen.png">
