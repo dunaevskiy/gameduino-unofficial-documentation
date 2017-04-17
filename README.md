@@ -1,4 +1,4 @@
-# Gameduino Unofficial Documentation
+# Gameduino Documentation (neoficiální)
 [![license](https://img.shields.io/badge/license-(cc)_by--nc--sa-blue.svg?style=flat-square)]() [![license](https://img.shields.io/badge/platform-arduino-green.svg?style=flat-square)]() [![license](https://img.shields.io/badge/shield-gameduino-green.svg?style=flat-square)]()
 
 <img align="right" width="300px" src="images/gameduino.jpg"> 
