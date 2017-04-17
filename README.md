@@ -290,11 +290,13 @@ for (i = 0; i < 4; i++) {
 ### Rotace spritu
 
 Rotaci spritu zajištují 3 bity v paměti [`RAM_SPR`](#ram_spr). Podle osy `x` překlápí 11. bit, podle `y` 10. bit, 9. bit překlápí sprite diagonálně. Všechny možné typy rotací a jejich decimální hodnota jsou uvedeny v tabulce.
+
 ![](images/rotation.png)
 
 
 ### Kolize spritu
 Všechny sprity se dělí na dva typy `J` (31.bit = 0) a `K` (31.bit = 1). Ke kolizi může dojít vždy pouze mezi dvěma spritama různých typů.
+
 
 # Barva
 Každá definovaná barva zabírá 16 bitů paměti. Nejvyšší bit (typ A) určuje, zda tato barva je průhledná. Pokud ano, tak zbytek hodnot je ignorován, tzn. nelze vytvořit poloprůhlednou barvu.
