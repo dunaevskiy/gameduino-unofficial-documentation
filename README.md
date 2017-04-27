@@ -348,6 +348,7 @@ Oficiální stránky nefungují (500 Internal Server Error). Existuje možnost s
 
 
 <img align="right" height="150px" src="https://www.python.org/static/opengraph-icon-200x200.png">
+
 # Gameduino: Python package
 [Python Gameduino](http://excamera.com/sphinx/gameduino/python.html)
 
