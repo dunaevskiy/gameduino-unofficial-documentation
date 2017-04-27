@@ -344,9 +344,40 @@ Pokud je počátek každé z pamětí již vyplněn daty, tak je potřeba posuno
 
 
 ## Foreground Encoder
-Nefunguje, 500 Internal Server Error. Existuje možnost samostatně stáhnout python package a kodovat obrázky na vlastním počítači (neověřeno).
+Oficiální stránky nefungují (500 Internal Server Error). Existuje možnost samostatně stáhnout python package a kodovat obrázky na vlastním počítači.
 
-[http://excamera.com/sphinx/gameduino/python.html](http://excamera.com/sphinx/gameduino/python.html)
+
+<img align="right" height="150px" src="https://www.python.org/static/opengraph-icon-200x200.png">
+# Gameduino: Python package
+[Python Gameduino](http://excamera.com/sphinx/gameduino/python.html)
+
+Existuje oficiální package gameduino v rámci python `2.7`, jenž poskytuje některé funkce pro práci s shieldem. Je však zastaralý a po instalaci potřebuje manuálně upravit zdrojový kod.
+
+Mezi užitečné funkce patří např. kodér background, kodér spritů, screenshot obrazovky (bez využití fyzického shieldu).
+
+
+## Install
+> **Poznámka:** Následující instrukce byly testovány pouze na macOS Sierra 10.12.4
+
+```bash
+# python 2.7 required
+easy_install pip       # Install pip
+pip install pillow     # Install lib for images
+pip install gameduino  # Install gameduino
+```
+
+Ujistěte se, že Váš $PYTHONPATH je v pořádku. 
+
+```bash
+# Launch python & check import Image
+python
+>>> from PIL import Image
+```
+
+Při spuštění ukázkových skriptů z `./python/` se budou generovat jednotlivé chyby. Především se to týká `import Image`, jenž se má v souborech gameduino nahradit za `from PIL import Image`, a různých názvů deprecated funkcí/metod, jenž se mají nahradit podle chybové zprávy (pouze název).
+
+## Skripty ./python/
+- ***encoder_background.py*** - transformace obrázku pro využití na backgroud vrstvě, vytváří preview obrazovky se všema znakama
 
 
 # Příklady
