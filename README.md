@@ -367,7 +367,7 @@ pip install pillow     # Install lib for images
 pip install gameduino  # Install gameduino
 ```
 
-Ujistěte se, že Váš $PYTHONPATH je v pořádku. 
+Ujistěte se, že Váš `$PYTHONPATH` je v pořádku. 
 
 ```bash
 # Launch python & check import Image
