@@ -195,9 +195,9 @@ Může být definováno 8 unikátních palet. Čtyři palety obsahující 256 ba
 ### RAM_SPR
 - Přidělená paměť: 2048 bytes
 - Jedna hodnota zabírá: 4 bytes
-- Kapacita hodnot: 512 (uživatel definuje pouze 256 hodnot, zbytek je využívám gameduinem pro lepší vykreslování)
+- Kapacita hodnot: 512 (uživatel definuje pouze 256 hodnot, zbytek je využívan gameduinem pro lepší vykreslování)
 
-Uchovává vlastnosti používaných spritů, každý je určen přesně 32 bity. Maximální počet spritů na obrazovce je 256. Zápis se provádí s pomocí metody [GD.sprite(...)](#některé-základní-metody-knihovny-gameduino).
+Uchovává vlastnosti používaných spritů, každý je určen přesně 32 bity. Maximální počet spritů na obrazovce je 256. Zápis se provádí s pomocí metody [GD.sprite(...)](#některé-základní-metody-knihovny-gameduino). Číslo spritu (int spr) zárověn určuje z-index překrytí - větší pořadové číslo překrývá sprity s menšími čísly.
 
 ![](images/hex_sprite_control.png)
 
