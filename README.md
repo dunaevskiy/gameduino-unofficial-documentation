@@ -3,7 +3,7 @@
 
 <img align="right" width="300px" src="images/gameduino.jpg"> 
 
-[Gameduino](http://excamera.com/sphinx/gameduino/) je shield, jenž poskytuje možnost připojit Arduino k VGA monitoru a audio výstupu a efektivně pracovat s grafickými prvky. Základem grafického zobrazení jsou tři nezávislé [tile-based](https://en.wikipedia.org/wiki/Tile-based_video_game) vrstvy.
+[Gameduino](http://excamera.com/sphinx/gameduino/) - shield, poskytuje možnost připojit Arduino k VGA monitoru a audio výstupu. Základem grafického zobrazení jsou tři nezávislé [tile-based](https://en.wikipedia.org/wiki/Tile-based_video_game) vrstvy.
 
 * [Některé základní metody knihovny Gameduino](#některé-základní-metody-knihovny-gameduino)
 * [Vykreslování na obrazovku](#vykreslování-na-obrazovku)
