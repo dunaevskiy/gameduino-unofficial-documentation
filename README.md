@@ -46,6 +46,8 @@
 
 - *void* **GD::sprite (int spr, int x, int y, byte image, byte palette, byte rot=0, byte jk=0)** - zadává vlastnosti a vykresluje jeden ze [spritů](#foreground)
 
+- *void* **GD::waitvblank()** - funkce čeká na vykreslení celé obrazovky, využití pro plynulé animace a validní kolize objektů
+
 Jiné metody: [http://excamera.com/sphinx/gameduino/GD/index.html](http://excamera.com/sphinx/gameduino/GD/index.html)
 
 
